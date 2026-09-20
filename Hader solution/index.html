@@ -1,0 +1,2001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Haider Solution | AI Automation & Governance Engineering</title>
+  <meta name="description" content="AI Automation & Governance Engineering by Haider Ali. Designing enterprise AI agents, compliance pipelines, and audit systems for businesses worldwide." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & CSS VARIABLES (IBM / Carbon Design Language Inspiration)
+       ========================================================================== */
+    :root {
+      --bg-white: #FFFFFF;
+      --bg-light: #F4F4F4;
+      --bg-card: #FFFFFF;
+      --bg-dark: #161616;
+      --bg-dark-secondary: #262626;
+
+      --text-primary: #161616;
+      --text-secondary: #525252;
+      --text-muted: #8D8D8D;
+      --text-inverse: #F4F4F4;
+      --text-inverse-muted: #A8A8A8;
+
+      --blue-primary: #0F62FE;
+      --blue-hover: #0353E9;
+      --blue-active: #002D9C;
+      --teal-accent: #009D9A;
+      --teal-light: #DEFBE6;
+      --teal-text: #007D79;
+      
+      --border-subtle: #E0E0E0;
+      --border-strong: #8D8D8D;
+      --border-dark: #393939;
+
+      --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+
+      --radius-sm: 2px;
+      --radius-md: 4px;
+
+      --container-max: 1200px;
+      --header-height: 56px;
+      --tab-height: 48px;
+    }
+
+    /* Base Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      color: var(--text-primary);
+      background-color: var(--bg-white);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-weight: 400;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Accessibility Focus States */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--blue-primary);
+      outline-offset: 2px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Typography & Utilities */
+    .mono {
+      font-family: var(--font-mono);
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ==========================================================================
+       TOP NAVIGATION BAR & STICKY TAB ROW
+       ========================================================================== */
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: var(--bg-white);
+      border-bottom: 1px solid var(--border-subtle);
+      height: var(--header-height);
+    }
+
+    .top-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      background-color: var(--bg-light);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-left: 1px solid var(--border-subtle);
+      padding-left: 0.75rem;
+      margin-left: 0.25rem;
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .brand-tag {
+        display: inline-block;
+      }
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .location-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background-color: var(--teal-accent);
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* Secondary Sticky Tab Row */
+    .tabs-bar {
+      position: sticky;
+      top: var(--header-height);
+      z-index: 999;
+      background-color: var(--bg-white);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .tabs-nav {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .tabs-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-link {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 3px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+      text-transform: none; /* Sentence case explicitly */
+    }
+
+    .tab-link:hover {
+      color: var(--text-primary);
+      background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .tab-link.active {
+      color: var(--blue-primary);
+      border-bottom-color: var(--blue-primary);
+      font-weight: 600;
+    }
+
+    /* Mobile Hamburger Menu */
+    .hamburger-btn {
+      display: none;
+      background: none;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.6rem;
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+
+    .mobile-menu-drawer {
+      display: none;
+      position: fixed;
+      top: var(--header-height);
+      left: 0;
+      right: 0;
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 1rem 1.5rem;
+      z-index: 998;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .mobile-menu-drawer.open {
+      display: block;
+    }
+
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .mobile-nav-link {
+      padding: 0.6rem 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .mobile-nav-link.active {
+      color: var(--blue-primary);
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .location-badge {
+        display: none;
+      }
+    }
+
+    /* ==========================================================================
+       BUTTONS & LINKS (Corporate Action Style)
+       ========================================================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.5rem;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      text-decoration: none;
+      line-height: 1;
+      border: 1px solid transparent;
+    }
+
+    .btn .btn-arrow {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    .btn-primary {
+      background-color: var(--blue-primary);
+      color: #FFFFFF;
+      border-color: var(--blue-primary);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--blue-hover);
+      border-color: var(--blue-hover);
+    }
+
+    .btn-primary:active {
+      background-color: var(--blue-active);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--blue-primary);
+      border-color: var(--blue-primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(15, 98, 254, 0.05);
+      border-color: var(--blue-hover);
+      color: var(--blue-hover);
+    }
+
+    .btn-secondary:active {
+      background-color: rgba(15, 98, 254, 0.1);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.8125rem;
+    }
+
+    .text-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--blue-primary);
+      transition: color 0.15s ease;
+    }
+
+    .text-link .link-arrow {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .text-link:hover {
+      color: var(--blue-hover);
+      text-decoration: underline;
+    }
+
+    .text-link:hover .link-arrow {
+      transform: translateX(3px);
+    }
+
+    .badge-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-radius: var(--radius-sm);
+    }
+
+    .badge-blue {
+      background-color: rgba(15, 98, 254, 0.08);
+      color: var(--blue-primary);
+      border: 1px solid rgba(15, 98, 254, 0.2);
+    }
+
+    .badge-teal {
+      background-color: rgba(0, 157, 154, 0.08);
+      color: var(--teal-accent);
+      border: 1px solid rgba(0, 157, 154, 0.25);
+    }
+
+    /* ==========================================================================
+       SECTIONS GENERAL STYLING & SCROLL ANIMATION
+       ========================================================================== */
+    section {
+      padding: 5rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+      scroll-margin-top: calc(var(--header-height) + var(--tab-height));
+    }
+
+    .bg-light {
+      background-color: var(--bg-light);
+    }
+
+    .bg-white {
+      background-color: var(--bg-white);
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      display: block;
+      text-transform: none;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      line-height: 1.25;
+      text-align: left;
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    /* Scroll reveal subtle animations */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    .reveal-item.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       TAB 1 — HERO SECTION
+       ========================================================================== */
+    .hero-section {
+      padding: 4.5rem 0 4rem 0;
+      background-color: var(--bg-white);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-transform: none;
+    }
+
+    .hero-title {
+      font-size: 2.65rem;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-subtext {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 580px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .hero-teaser {
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      max-width: 540px;
+    }
+
+    .hero-teaser p {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Hero Animation Stagger on Load */
+    .fade-seq-1 {
+      animation: fadeInSeq 0.6s ease forwards;
+    }
+    .fade-seq-2 {
+      animation: fadeInSeq 0.6s ease 0.15s forwards;
+      opacity: 0;
+    }
+    .fade-seq-3 {
+      animation: fadeInSeq 0.6s ease 0.3s forwards;
+      opacity: 0;
+    }
+    .fade-seq-4 {
+      animation: fadeInSeq 0.6s ease 0.45s forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInSeq {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Hero Graphic (Line Chart & Governance Network System) */
+    .hero-visual-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .hero-visual-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .hero-visual-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-visual-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--teal-text);
+    }
+
+    .hero-svg-container {
+      width: 100%;
+      height: auto;
+    }
+
+    /* Restrained SVG Line Drawing Animation */
+    .draw-line-1 {
+      stroke-dasharray: 450;
+      stroke-dashoffset: 450;
+      animation: drawStroke 1.6s ease-out 0.2s forwards;
+    }
+
+    .draw-line-2 {
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+      animation: drawStroke 1.4s ease-out 0.5s forwards;
+    }
+
+    .draw-line-grid {
+      opacity: 0;
+      animation: fadeInSeq 0.8s ease 0.1s forwards;
+    }
+
+    .draw-node {
+      opacity: 0;
+      animation: fadeInSeq 0.4s ease 1.2s forwards;
+    }
+
+    @keyframes drawStroke {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Hero metric indicators */
+    .hero-metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .hero-metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-metric-label {
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+    }
+
+    .hero-metric-value {
+      font-family: var(--font-mono);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .hero-title {
+        font-size: 2.15rem;
+      }
+    }
+
+    /* ==========================================================================
+       DARK STATS BANNER (Near-Black #161616 - Used Only Once)
+       ========================================================================== */
+    .stats-band {
+      background-color: var(--bg-dark);
+      color: var(--text-inverse);
+      padding: 3.5rem 0;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .stats-band-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .stat-card {
+      border-left: 2px solid var(--blue-primary);
+      padding-left: 1.25rem;
+    }
+
+    .stat-number {
+      font-family: var(--font-mono);
+      font-size: 2.25rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-label {
+      font-size: 0.9375rem;
+      color: var(--text-inverse-muted);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 768px) {
+      .stats-band-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    /* ==========================================================================
+       MOST IN DEMAND RIGHT NOW (Grid of 4 Cards)
+       ========================================================================== */
+    .demand-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .demand-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s ease;
+    }
+
+    .demand-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .demand-card-top {
+      margin-bottom: 1.25rem;
+    }
+
+    .demand-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .demand-icon-box {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue-primary);
+    }
+
+    .demand-card-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      line-height: 1.35;
+    }
+
+    .demand-card-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    @media (max-width: 768px) {
+      .demand-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       TAB 2 — ABOUT SECTION
+       ========================================================================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 3.5rem;
+      align-items: start;
+      margin-bottom: 3.5rem;
+    }
+
+    .avatar-wrapper {
+      position: sticky;
+      top: 120px;
+    }
+
+    .avatar-box {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: var(--bg-light);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .avatar-caption {
+      margin-top: 0.85rem;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      border-left: 2px solid var(--border-subtle);
+      padding-left: 0.6rem;
+    }
+
+    .bio-body p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+
+    .bio-body p strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Fact Rows */
+    .fact-rows-container {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .fact-row {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+      align-items: baseline;
+    }
+
+    .fact-label {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .fact-value {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 768px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .avatar-wrapper {
+        position: static;
+        max-width: 200px;
+      }
+      .fact-row {
+        grid-template-columns: 130px 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       TAB 3 — SERVICE SECTION (Clean Ranked Table / List)
+       ========================================================================== */
+    .service-tier-group {
+      margin-bottom: 3.5rem;
+    }
+
+    .tier-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--blue-primary);
+      margin-bottom: 1rem;
+    }
+
+    .tier-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .tier-rule-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .service-table {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-row {
+      display: grid;
+      grid-template-columns: 48px 1fr 160px;
+      gap: 1.25rem;
+      padding: 1.15rem 0.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      align-items: center;
+      transition: background-color 0.15s ease;
+    }
+
+    .service-row:hover {
+      background-color: var(--bg-light);
+    }
+
+    .service-rank {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .service-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .service-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .service-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .service-price {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      text-align: right;
+    }
+
+    @media (max-width: 680px) {
+      .service-row {
+        grid-template-columns: 36px 1fr;
+        row-gap: 0.5rem;
+      }
+      .service-price {
+        grid-column: 2 / -1;
+        text-align: left;
+        font-size: 0.8125rem;
+        color: var(--blue-primary);
+      }
+    }
+
+    /* ==========================================================================
+       TAB 4 — CONTACT SECTION
+       ========================================================================== */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .contact-icon-box {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue-primary);
+      flex-shrink: 0;
+      background: var(--bg-white);
+    }
+
+    .contact-info-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .contact-info-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.2rem;
+    }
+
+    .contact-info-val {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .contact-info-val a:hover {
+      color: var(--blue-primary);
+      text-decoration: underline;
+    }
+
+    .social-links-block {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1.5rem;
+    }
+
+    .social-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    .social-links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .social-link-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      transition: color 0.15s ease;
+    }
+
+    .social-link-item:hover {
+      color: var(--blue-primary);
+      text-decoration: underline;
+    }
+
+    .social-link-item svg {
+      color: var(--text-secondary);
+    }
+
+    .social-link-item:hover svg {
+      color: var(--blue-primary);
+    }
+
+    /* Contact Form */
+    .contact-form-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem 0.85rem;
+      font-family: var(--font-sans);
+      font-size: 0.9375rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-white);
+      color: var(--text-primary);
+      transition: border-color 0.15s ease;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      border-color: var(--blue-primary);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-submit-row {
+      margin-top: 1.5rem;
+    }
+
+    .form-status {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      font-size: 0.875rem;
+      border-radius: var(--radius-sm);
+      display: none;
+    }
+
+    .form-status.success {
+      display: block;
+      background-color: rgba(0, 157, 154, 0.1);
+      color: var(--teal-text);
+      border: 1px solid var(--teal-accent);
+    }
+
+    @media (max-width: 860px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+
+    /* ==========================================================================
+       FLOATING WHATSAPP BUTTON (Small, Understated)
+       ========================================================================== */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1050;
+      width: 48px;
+      height: 48px;
+      background-color: #25D366;
+      color: #FFFFFF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+    }
+
+    .whatsapp-float:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .whatsapp-float svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
+
+    .whatsapp-pulse {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1px solid #25D366;
+      animation: subtleRing 3s infinite cubic-bezier(0.25, 1, 0.5, 1);
+      pointer-events: none;
+    }
+
+    @keyframes subtleRing {
+      0% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      70% {
+        transform: scale(1.35);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1.35);
+        opacity: 0;
+      }
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    .site-footer {
+      background-color: var(--bg-light);
+      border-top: 1px solid var(--border-subtle);
+      padding: 3rem 0;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .footer-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .footer-link {
+      color: var(--text-secondary);
+      transition: color 0.15s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--blue-primary);
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       PREFERS-REDUCED-MOTION
+       ========================================================================== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001s !important;
+        scroll-behavior: auto !important;
+      }
+      .draw-line-1, .draw-line-2 {
+        stroke-dashoffset: 0 !important;
+      }
+      .reveal-item {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="top-header" id="top-header">
+    <div class="container top-header-inner">
+      <div class="header-left">
+        <a href="#home" class="brand-logo" aria-label="Haider Solution Home">
+          <span class="logo-mark">
+            <img src="pic/Haider Ali.png" alt="Haider Ali" class="logo-img" />
+          </span>
+          <span>Haider Solution</span>
+          <span class="brand-tag">Governance & Automation</span>
+        </a>
+      </div>
+      <div class="header-actions">
+        <div class="location-badge">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Bahawalpur, PK &bull; Remote Worldwide</span>
+        </div>
+        <a href="#contact" class="btn btn-primary btn-sm">
+          <span>Get in touch</span>
+          <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <button class="hamburger-btn" id="mobileMenuToggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <nav class="mobile-menu-drawer" id="mobileMenuDrawer" aria-label="Mobile Navigation">
+    <div class="mobile-nav-links">
+      <a href="#home" class="mobile-nav-link active">Home</a>
+      <a href="#about" class="mobile-nav-link">About</a>
+      <a href="#service" class="mobile-nav-link">Service</a>
+      <a href="#contact" class="mobile-nav-link">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Secondary Sticky Tab Row (Sentence Case, Left-Aligned) -->
+  <nav class="tabs-bar" id="tabsBar" aria-label="Section Navigation">
+    <div class="container">
+      <div class="tabs-nav" id="tabsNav" role="tablist">
+        <a href="#home" class="tab-link active" data-target="home" role="tab" aria-selected="true">Home</a>
+        <a href="#about" class="tab-link" data-target="about" role="tab" aria-selected="false">About</a>
+        <a href="#service" class="tab-link" data-target="service" role="tab" aria-selected="false">Service</a>
+        <a href="#contact" class="tab-link" data-target="contact" role="tab" aria-selected="false">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- =======================================================================
+         TAB 1 — HOME
+         ======================================================================= -->
+    <section id="home" class="hero-section" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="hero-eyebrow fade-seq-1">
+              <span>AI automation & governance engineering</span>
+            </div>
+            <h1 id="hero-title" class="hero-title fade-seq-2">
+              Automation Systems Engineered for Compliance.
+            </h1>
+            <p class="hero-subtext fade-seq-3">
+              We build seamless automated solutions to ensure your business stays compliant ahead of critical regulatory deadlines.
+            </p>
+            <div class="hero-actions fade-seq-4">
+              <a href="#service" class="btn btn-primary">
+                <span>View services</span>
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+              <a href="#contact" class="btn btn-secondary">
+                <span>Contact me</span>
+                <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+            <div class="hero-teaser fade-seq-4">
+              <p>Specializing in board-level AI governance, enterprise RAG audit pipelines, and autonomous workflows engineered for compliance with the EU AI Act, GDPR, and HIPAA.</p>
+              <a href="#about" class="text-link">
+                <span>Read more about me</span>
+                <span class="link-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero Graph / Line Graphic (Draws once on load) -->
+          <div class="hero-visual-card fade-seq-3" aria-hidden="true">
+            <div class="hero-visual-header">
+              <span class="hero-visual-title">Audit & Automation Pipeline Telemetry</span>
+              <span class="hero-visual-status">
+                <span class="status-dot"></span>
+                <span>Active 99.98%</span>
+              </span>
+            </div>
+            
+            <svg class="hero-svg-container" viewBox="0 0 440 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Grid lines -->
+              <g class="draw-line-grid" stroke="#E0E0E0" stroke-width="1" stroke-dasharray="2 3">
+                <line x1="20" y1="30" x2="420" y2="30" />
+                <line x1="20" y1="80" x2="420" y2="80" />
+                <line x1="20" y1="130" x2="420" y2="130" />
+                <line x1="20" y1="180" x2="420" y2="180" />
+                <line x1="80" y1="20" x2="80" y2="190" />
+                <line x1="180" y1="20" x2="180" y2="190" />
+                <line x1="280" y1="20" x2="280" y2="190" />
+                <line x1="380" y1="20" x2="380" y2="190" />
+              </g>
+
+              <!-- Line 2: Risk mitigation trajectory (teal) -->
+              <path class="draw-line-2" d="M 30 160 Q 120 150, 180 115 T 310 75 T 410 40" fill="none" stroke="#009D9A" stroke-width="2" stroke-linecap="round" />
+              
+              <!-- Line 1: Automated compliance confidence (primary blue) -->
+              <path class="draw-line-1" d="M 30 145 C 90 140, 140 100, 210 90 C 280 80, 330 45, 410 25" fill="none" stroke="#0F62FE" stroke-width="2.5" stroke-linecap="round" />
+
+              <!-- Nodes & Inspection Points -->
+              <g class="draw-node">
+                <circle cx="30" cy="145" r="4" fill="#0F62FE" />
+                <circle cx="210" cy="90" r="4" fill="#0F62FE" />
+                <circle cx="410" cy="25" r="5" fill="#0F62FE" />
+                <circle cx="410" cy="25" r="8" stroke="#0F62FE" stroke-width="1.5" fill="none" opacity="0.5" />
+
+                <circle cx="180" cy="115" r="3.5" fill="#009D9A" />
+                <circle cx="310" cy="75" r="3.5" fill="#009D9A" />
+                <circle cx="410" cy="40" r="4" fill="#009D9A" />
+
+                <!-- Text labels in graph -->
+                <text x="35" y="140" fill="#525252" font-family="'IBM Plex Mono', monospace" font-size="9">Intake</text>
+                <text x="215" y="85" fill="#525252" font-family="'IBM Plex Mono', monospace" font-size="9">PII Scrubbed</text>
+                <text x="340" y="20" fill="#0F62FE" font-family="'IBM Plex Mono', monospace" font-size="9" font-weight="600">Audit Proof</text>
+              </g>
+            </svg>
+
+            <div class="hero-metrics-row">
+              <div class="hero-metric-item">
+                <span class="hero-metric-label">PII REDUCTION</span>
+                <span class="hero-metric-value">100%</span>
+              </div>
+              <div class="hero-metric-item">
+                <span class="hero-metric-label">LEGAL REVIEW</span>
+                <span class="hero-metric-value">-90% TIME</span>
+              </div>
+              <div class="hero-metric-item">
+                <span class="hero-metric-label">ACCURACY</span>
+                <span class="hero-metric-value">99.8%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dark Proof / Stats Band (Used Only Once) -->
+    <section class="stats-band" aria-label="Key Proof & Performance Metrics">
+      <div class="container">
+        <div class="stats-band-grid">
+          <div class="stat-card reveal-item">
+            <div class="stat-number">20</div>
+            <div class="stat-label">Enterprise workflows mapped to real market compliance requirements.</div>
+          </div>
+          <div class="stat-card reveal-item">
+            <div class="stat-number">4</div>
+            <div class="stat-label">Demand tiers, ranked strictly by legal urgency and measurable ROI.</div>
+          </div>
+          <div class="stat-card reveal-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Remote-ready delivery with secure deployment into your cloud tenant.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Most in Demand Right Now (Home Sub-section) -->
+    <section class="bg-light" aria-labelledby="demand-section-title">
+      <div class="container">
+        <span class="section-eyebrow">Enterprise Priorities</span>
+        <h2 id="demand-section-title" class="section-title">Most in demand right now</h2>
+        <p class="section-desc">Critical compliance and governance implementations designed to secure AI pipelines and shield organizations from regulatory exposure.</p>
+
+        <div class="demand-grid">
+          <!-- Card 1 -->
+          <div class="demand-card reveal-item">
+            <div class="demand-card-top">
+              <div class="demand-card-meta">
+                <div class="demand-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+                </div>
+                <span class="badge-tag badge-blue">Tier 1</span>
+              </div>
+              <h3 class="demand-card-title">Shadow AI &amp; Vendor Risk Scanner</h3>
+              <p class="demand-card-desc">Flags unapproved AI tools employees use before they leak company data or violate internal compliance policies.</p>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="demand-card reveal-item">
+            <div class="demand-card-top">
+              <div class="demand-card-meta">
+                <div class="demand-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                  </svg>
+                </div>
+                <span class="badge-tag badge-blue">Tier 1</span>
+              </div>
+              <h3 class="demand-card-title">EU AI Act &amp; Governance Audit Pipeline</h3>
+              <p class="demand-card-desc">Automated audit trail and systematic verification so AI models meet upcoming statutory deadlines.</p>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="demand-card reveal-item">
+            <div class="demand-card-top">
+              <div class="demand-card-meta">
+                <div class="demand-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                  </svg>
+                </div>
+                <span class="badge-tag badge-blue">Tier 1</span>
+              </div>
+              <h3 class="demand-card-title">Internal RAG &amp; Vector Data Leak Audit</h3>
+              <p class="demand-card-desc">Checks internal ChatGPT-style tools and vector embeddings for hallucination, prompt injection, and data exposure.</p>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="demand-card reveal-item">
+            <div class="demand-card-top">
+              <div class="demand-card-meta">
+                <div class="demand-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
+                <span class="badge-tag badge-blue">Tier 1</span>
+              </div>
+              <h3 class="demand-card-title">Automated PII &amp; Sensitive Data Anonymizer</h3>
+              <p class="demand-card-desc">Strips personal, proprietary, and medical data before requests reach external LLM endpoints.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="demand-footer reveal-item">
+          <a href="#service" class="text-link">
+            <span>See all services</span>
+            <span class="link-arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         TAB 2 — ABOUT
+         ======================================================================= -->
+    <section id="about" class="bg-white" aria-labelledby="about-section-title">
+      <div class="container">
+        <span class="section-eyebrow">Engineering Profile</span>
+        <h2 id="about-section-title" class="section-title">About Haider Ali</h2>
+        <p class="section-desc">Focused on high-stakes AI governance, enterprise agents, and measurable commercial risk reduction.</p>
+
+        <div class="about-grid">
+          <!-- Avatar Photo -->
+          <div class="avatar-wrapper reveal-item">
+            <div class="avatar-box">
+              <img src="pic/Haider Ali.png" alt="Haider Ali - AI Automation &amp; Governance Engineer" class="avatar-img" />
+            </div>
+            <div class="avatar-caption">
+              <strong>Haider Ali</strong><br />
+              AI Automation &amp; Governance Engineer
+            </div>
+          </div>
+
+          <!-- Bio Content -->
+          <div class="bio-body reveal-item">
+            <p>
+              <strong>Haider Ali is an AI automation expert based in Bahawalpur, Pakistan, working with companies worldwide.</strong> His focus isn't basic chatbots &mdash; it's higher-stakes AI governance, compliance auditing, and enterprise-grade agents.
+            </p>
+            <p>
+              Regulations like the <strong>EU AI Act, GDPR, and HIPAA</strong> have made AI risk a board-level problem. Without programmatic safeguards, organizations risk severe statutory fines, loss of proprietary IP, and compromised client trust.
+            </p>
+            <p>
+              Every workflow he builds starts from a <strong>real, measurable business cost</strong> &mdash; a fine avoided, a multi-million-dollar contract won faster, or hundreds of hours of manual review removed for good. Systems are designed for seamless integration into existing cloud architectures with comprehensive audit logging.
+            </p>
+          </div>
+        </div>
+
+        <!-- 4 Fact Rows -->
+        <div class="fact-rows-container reveal-item">
+          <div class="fact-row">
+            <span class="fact-label">FOCUS</span>
+            <span class="fact-value">AI governance &amp; automation agents</span>
+          </div>
+          <div class="fact-row">
+            <span class="fact-label">STACK</span>
+            <span class="fact-value">n8n, Python, LLM APIs, RAG pipelines</span>
+          </div>
+          <div class="fact-row">
+            <span class="fact-label">BASED IN</span>
+            <span class="fact-value">Bahawalpur, Pakistan</span>
+          </div>
+          <div class="fact-row">
+            <span class="fact-label">AVAILABILITY</span>
+            <span class="fact-value">Open for new projects</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         TAB 3 — SERVICE
+         ======================================================================= -->
+    <section id="service" class="bg-light" aria-labelledby="service-section-title">
+      <div class="container">
+        <span class="section-eyebrow">Production Catalog</span>
+        <h2 id="service-section-title" class="section-title">20 automation workflows, ranked by real market demand</h2>
+        <p class="section-desc">Sorted the way clients actually buy &mdash; by urgency, legal pressure, and return on investment.</p>
+
+        <!-- Tier 1 — Critical urgency -->
+        <div class="service-tier-group reveal-item">
+          <div class="tier-header">
+            <h3 class="tier-title">
+              <span>Tier 1 &mdash; Critical urgency</span>
+            </h3>
+            <span class="tier-rule-tag mono">LEGAL &amp; COMPLIANCE RISK</span>
+          </div>
+          <div class="service-table">
+            <div class="service-row">
+              <span class="service-rank">01</span>
+              <div class="service-details">
+                <span class="service-name">Shadow AI &amp; Vendor Risk Scanner</span>
+                <span class="service-desc">Flags unapproved AI tools before they leak company data</span>
+              </div>
+              <span class="service-price">$8k&ndash;$25k+</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">02</span>
+              <div class="service-details">
+                <span class="service-name">EU AI Act &amp; Governance Audit Pipeline</span>
+                <span class="service-desc">Automated audit trail for regulatory deadlines</span>
+              </div>
+              <span class="service-price">$8k&ndash;$25k+</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">03</span>
+              <div class="service-details">
+                <span class="service-name">Internal RAG &amp; Vector Data Leak Audit</span>
+                <span class="service-desc">Checks internal AI tools for hallucination/data exposure</span>
+              </div>
+              <span class="service-price">$8k&ndash;$25k+</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">04</span>
+              <div class="service-details">
+                <span class="service-name">Automated PII &amp; Sensitive Data Anonymizer</span>
+                <span class="service-desc">Strips personal/medical data before it reaches an LLM</span>
+              </div>
+              <span class="service-price">$8k&ndash;$25k+</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">05</span>
+              <div class="service-details">
+                <span class="service-name">AI Model Bias &amp; Fairness Monitor</span>
+                <span class="service-desc">Proves hiring/finance models aren't discriminating</span>
+              </div>
+              <span class="service-price">$8k&ndash;$25k+</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tier 2 — High commercial ROI -->
+        <div class="service-tier-group reveal-item">
+          <div class="tier-header">
+            <h3 class="tier-title">
+              <span>Tier 2 &mdash; High commercial ROI</span>
+            </h3>
+            <span class="tier-rule-tag mono">REVENUE &amp; CONTRACT VELOCITY</span>
+          </div>
+          <div class="service-table">
+            <div class="service-row">
+              <span class="service-rank">06</span>
+              <div class="service-details">
+                <span class="service-name">Multi-Agent Enterprise RFP Proposal Generator</span>
+                <span class="service-desc">Turns weeks of proposal writing into minutes</span>
+              </div>
+              <span class="service-price">$5k&ndash;$15k</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">07</span>
+              <div class="service-details">
+                <span class="service-name">Contract Risk &amp; Liability Audit Pipeline</span>
+                <span class="service-desc">Cuts legal review time by up to 90%</span>
+              </div>
+              <span class="service-price">$5k&ndash;$15k</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">08</span>
+              <div class="service-details">
+                <span class="service-name">M&amp;A Due Diligence &amp; Financial Audit Agent</span>
+                <span class="service-desc">Replaces weeks of manual review during acquisitions</span>
+              </div>
+              <span class="service-price">$5k&ndash;$15k</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">09</span>
+              <div class="service-details">
+                <span class="service-name">Regulatory Update &amp; Compliance Monitor</span>
+                <span class="service-desc">Tracks daily law changes automatically</span>
+              </div>
+              <span class="service-price">$5k&ndash;$15k</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">10</span>
+              <div class="service-details">
+                <span class="service-name">Insurance Claims &amp; Medical Processing Agent</span>
+                <span class="service-desc">Cuts claim approval time from weeks to minutes</span>
+              </div>
+              <span class="service-price">$5k&ndash;$15k</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tier 3 — Operational efficiency -->
+        <div class="service-tier-group reveal-item">
+          <div class="tier-header">
+            <h3 class="tier-title">
+              <span>Tier 3 &mdash; Operational efficiency</span>
+            </h3>
+            <span class="tier-rule-tag mono">WORKFORCE PRODUCTIVITY</span>
+          </div>
+          <div class="service-table">
+            <div class="service-row">
+              <span class="service-rank">11</span>
+              <div class="service-details">
+                <span class="service-name">Cybersecurity Incident Triage Agent</span>
+                <span class="service-desc">Contains active threats before downtime</span>
+              </div>
+              <span class="service-price">$3k&ndash;$12k</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">12</span>
+              <div class="service-details">
+                <span class="service-name">RFP Technical Compliance Extractor</span>
+                <span class="service-desc">Parses long tenders so nothing is missed</span>
+              </div>
+              <span class="service-price">$3k&ndash;$12k</span>
+            </div>
+            <div class="service-row">
+              <span class="service-rank">13</span>
+              <div class="service-details">
+                <span class="service-name">Revenue Leakage &amp; Churn Recovery Agent</span>
+                <span class="service-desc">Catches billing leaks early</span>
+              </div>
+              <span class="service-price">$3k&ndash;$12k</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         TAB 4 — CONTACT
+         ======================================================================= -->
+    <section id="contact" class="bg-white" aria-labelledby="contact-section-title">
+      <div class="container">
+        <span class="section-eyebrow">Project Inquiry</span>
+        <h2 id="contact-section-title" class="section-title">Start a project</h2>
+        <p class="section-desc">Tell me what's costing your team time or risk right now &mdash; I'll tell you honestly whether automation is the fix.</p>
+
+        <div class="contact-grid">
+          <!-- Left Column: Contact info & Social links -->
+          <div class="contact-left reveal-item">
+            <div class="contact-info-list">
+              <!-- Email -->
+              <div class="contact-info-item">
+                <div class="contact-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </div>
+                <div class="contact-info-content">
+                  <span class="contact-info-label">Email</span>
+                  <span class="contact-info-val">
+                    <a href="mailto:haideralihimmatwala@gmail.com">haideralihimmatwala@gmail.com</a>
+                  </span>
+                </div>
+              </div>
+
+              <!-- WhatsApp -->
+              <div class="contact-info-item">
+                <div class="contact-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                </div>
+                <div class="contact-info-content">
+                  <span class="contact-info-label">Phone / WhatsApp</span>
+                  <span class="contact-info-val">
+                    <a href="https://wa.me/923277945643" target="_blank" rel="noopener noreferrer">+92 327 7945643</a>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Location -->
+              <div class="contact-info-item">
+                <div class="contact-icon-box">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+                <div class="contact-info-content">
+                  <span class="contact-info-label">Location</span>
+                  <span class="contact-info-val">Bahawalpur, Pakistan</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Understated Social Links -->
+            <div class="social-links-block">
+              <div class="social-title">Professional Profiles</div>
+              <div class="social-links-list">
+                <a href="https://www.linkedin.com/in/haider-ali-himmat-wala-a60331423/" target="_blank" rel="noopener noreferrer" class="social-link-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                  <span>Connect on LinkedIn</span>
+                </a>
+                <a href="https://www.facebook.com/Haiderali164" target="_blank" rel="noopener noreferrer" class="social-link-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.688 5H18V0h-3.808C10.595 0 9 1.583 9 4.615V8z"/>
+                  </svg>
+                  <span>Facebook</span>
+                </a>
+                <a href="https://www.youtube.com/@haider_ali_official-1-p" target="_blank" rel="noopener noreferrer" class="social-link-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  <span>YouTube</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Clean Enterprise Contact Form -->
+          <div class="contact-right reveal-item">
+            <form class="contact-form-card" id="projectContactForm">
+              <div class="form-group">
+                <label for="userName" class="form-label">Your Name</label>
+                <input type="text" id="userName" name="name" class="form-input" placeholder="e.g. Sarah Jenkins" required />
+              </div>
+
+              <div class="form-group">
+                <label for="userEmail" class="form-label">Work Email</label>
+                <input type="email" id="userEmail" name="email" class="form-input" placeholder="name@company.com" required />
+              </div>
+
+              <div class="form-group">
+                <label for="userMessage" class="form-label">What do you need automated?</label>
+                <textarea id="userMessage" name="message" class="form-textarea" placeholder="Briefly describe your process, current manual hours, or compliance deadline..." required></textarea>
+              </div>
+
+              <div class="form-submit-row">
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                  <span>Send message</span>
+                  <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+                </button>
+              </div>
+
+              <div class="form-status" id="formStatus" role="status"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Floating WhatsApp Action Button -->
+  <a href="https://wa.me/923277945643" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Chat with Haider Ali on WhatsApp">
+    <div class="whatsapp-pulse"></div>
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+      <path d="M16 2a13.9 13.9 0 0 0-12 20.9L2 30l7.3-1.9A13.9 13.9 0 1 0 16 2zm0 25.4a11.5 11.5 0 0 1-5.9-1.6l-.4-.3-4.4 1.1 1.2-4.3-.3-.5a11.5 11.5 0 1 1 9.8 5.6zm6.3-8.6c-.3-.2-2-.9-2.3-1s-.6-.2-.8.2-.9 1-1.1 1.2-.4.3-.7.1a8.9 8.9 0 0 1-2.6-1.6 9.8 9.8 0 0 1-1.8-2.2c-.2-.3 0-.5.2-.7l.5-.6a2.2 2.2 0 0 0 .3-.5.7.7 0 0 0 0-.6c-.1-.2-.8-2-1.1-2.7s-.6-.6-.8-.6h-.7a1.4 1.4 0 0 0-1 .5 4.3 4.3 0 0 0-1.3 3.2 7.5 7.5 0 0 0 1.6 4 17.2 17.2 0 0 0 6.6 5.8 22.4 22.4 0 0 0 2.2.8 5.3 5.3 0 0 0 2.4.2 3.9 3.9 0 0 0 2.6-1.8 3.2 3.2 0 0 0 .2-1.8c-.1-.3-.4-.4-.7-.5z"/>
+    </svg>
+  </a>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-meta">
+        <div>&copy; 2026 Haider Solution. Built by Haider Ali.</div>
+        <div class="mono" style="font-size: 0.8125rem; color: var(--text-muted);">Bahawalpur, Pakistan &bull; Available Worldwide</div>
+      </div>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/haider-ali-himmat-wala-a60331423/" target="_blank" rel="noopener noreferrer" class="footer-link">LinkedIn</a>
+        <a href="https://www.facebook.com/Haiderali164" target="_blank" rel="noopener noreferrer" class="footer-link">Facebook</a>
+        <a href="https://www.youtube.com/@haider_ali_official-1-p" target="_blank" rel="noopener noreferrer" class="footer-link">YouTube</a>
+        <a href="https://wa.me/923277945643" target="_blank" rel="noopener noreferrer" class="footer-link">WhatsApp</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =======================================================================
+       INTERACTIVE BEHAVIORS (IntersectionObserver, Mobile Menu, Form Handler)
+       ======================================================================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Mobile Menu Toggle
+      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      const mobileMenuDrawer = document.getElementById('mobileMenuDrawer');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+      if (mobileMenuToggle && mobileMenuDrawer) {
+        mobileMenuToggle.addEventListener('click', () => {
+          const isOpen = mobileMenuDrawer.classList.toggle('open');
+          mobileMenuToggle.setAttribute('aria-expanded', isOpen.toString());
+        });
+
+        mobileNavLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenuDrawer.classList.remove('open');
+            mobileMenuToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // 2. Active Tab Tracking via IntersectionObserver
+      const tabLinks = document.querySelectorAll('.tab-link');
+      const sections = ['home', 'about', 'service', 'contact'].map(id => document.getElementById(id)).filter(Boolean);
+
+      function setActiveTab(targetId) {
+        tabLinks.forEach(link => {
+          const isActive = link.getAttribute('data-target') === targetId;
+          link.classList.toggle('active', isActive);
+          link.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+
+        mobileNavLinks.forEach(link => {
+          const hrefTarget = link.getAttribute('href').replace('#', '');
+          link.classList.toggle('active', hrefTarget === targetId);
+        });
+      }
+
+      const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -60% 0px',
+        threshold: 0
+      };
+
+      const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveTab(entry.target.id);
+          }
+        });
+      }, observerOptions);
+
+      sections.forEach(sec => sectionObserver.observe(sec));
+
+      // Handle direct tab clicks for smooth scrolling
+      tabLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          const targetId = link.getAttribute('data-target');
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            e.preventDefault();
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+            setActiveTab(targetId);
+          }
+        });
+      });
+
+      // 3. Scroll Reveal for Sub-sections
+      const revealItems = document.querySelectorAll('.reveal-item');
+      if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealItems.forEach(el => revealObserver.observe(el));
+      } else {
+        revealItems.forEach(el => el.classList.add('revealed'));
+      }
+
+      // 4. Contact Form Handler (Front-End Validation & Feedback)
+      const contactForm = document.getElementById('projectContactForm');
+      const formStatus = document.getElementById('formStatus');
+      const submitBtn = document.getElementById('submitBtn');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const name = document.getElementById('userName').value.trim();
+          const email = document.getElementById('userEmail').value.trim();
+          const message = document.getElementById('userMessage').value.trim();
+
+          if (!name || !email || !message) return;
+
+          // Emulate submission feedback
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span>Sending inquiry...</span>';
+
+          setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Send message</span><span class="btn-arrow" aria-hidden="true">&rarr;</span>';
+            contactForm.reset();
+
+            if (formStatus) {
+              formStatus.className = 'form-status success';
+              formStatus.innerHTML = `Thank you, <strong>${name}</strong>. Your inquiry has been received. Haider Ali will review your project scope and respond within 24 hours.`;
+              formStatus.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          }, 800);
+        });
+      }
+    });
+  </script>
+</body>
+</html>
